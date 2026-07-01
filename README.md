@@ -165,8 +165,4 @@ multi-agent-RAG-Debate-Arena/
 
 ## 🔗 Related Projects
 
-<<<<<<< HEAD
-- [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent) - the project that inspired this one: an AI agent that auto-diagnoses pipeline failures and emails engineers a fix
-=======
-- [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent): the project that inspired this one, where an AI agent auto-diagnoses pipeline failures and emails engineers a fix
->>>>>>> 07f54bc (Remove em dashes from README)
+- [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent): the project that inspired this one, where an AI agent auto-diagnoses pipeline failures and emails engineers a fix.
