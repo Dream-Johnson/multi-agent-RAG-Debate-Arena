@@ -6,9 +6,9 @@
 ![Pinecone](https://img.shields.io/badge/Pinecone-Vector_DB-00C4B4?style=flat)
 ![Voyage AI](https://img.shields.io/badge/Voyage_AI-Embeddings-6366F1?style=flat)
 
-A multi-agent AI system where **three Claude Haiku agents** debate any topic using real Wikipedia knowledge - one argues FOR, one AGAINST, and a third judges the winner. Built on a full RAG (Retrieval-Augmented Generation) pipeline with vector search.
+A multi-agent AI system where **three Claude Haiku agents** debate any topic using real Wikipedia knowledge. One argues FOR, one AGAINST, and a third judges the winner. Built on a full RAG (Retrieval-Augmented Generation) pipeline with vector search.
 
-> 💡 **Inspired by** [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent) - where I first built an AI agent to automate debugging in a data pipeline. This project extends that idea: instead of one agent diagnosing a problem, three agents reason, argue, and evaluate together.
+> 💡 **Inspired by** [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent), where I first built an AI agent to automate debugging in a data pipeline. This project extends that idea: instead of one agent diagnosing a problem, three agents reason, argue, and evaluate together.
 
 ---
 
@@ -71,11 +71,11 @@ flowchart TD
 
 | Agent | Role | Context Source |
 |-------|------|---------------|
-| **Agent 1 — FOR** | Argues in favour of the topic | Top-5 chunks retrieved from Pinecone via vector similarity |
-| **Agent 2 — AGAINST** | Argues against the topic | Top-5 chunks retrieved from Pinecone via vector similarity |
-| **Agent 3 — Judge** | Scores both arguments, declares a winner | The two generated arguments (no direct RAG retrieval) |
+| **Agent 1 (FOR)** | Argues in favour of the topic | Top-5 chunks retrieved from Pinecone via vector similarity |
+| **Agent 2 (AGAINST)** | Argues against the topic | Top-5 chunks retrieved from Pinecone via vector similarity |
+| **Agent 3 (Judge)** | Scores both arguments and declares a winner | The two generated arguments (no direct RAG retrieval) |
 
-All three are powered by **Claude Haiku** (`claude-haiku-4-5`) and include **prompt injection guardrails** - Wikipedia content and user topics are tagged as untrusted data and can never override agent instructions.
+All three are powered by **Claude Haiku** (`claude-haiku-4-5`) and include **prompt injection guardrails**. Wikipedia content and user topics are tagged as untrusted data and can never override agent instructions.
 
 ---
 
@@ -95,7 +95,7 @@ All three are powered by **Claude Haiku** (`claude-haiku-4-5`) and include **pro
 
 ## 🔐 Security
 
-- Password-gated API — every endpoint requires `X-App-Password` header
+- Password-gated API: every endpoint requires an `X-App-Password` header
 - Timing-attack-safe comparison via `secrets.compare_digest()`
 - **Prompt injection defence**: user topic and Wikipedia content are wrapped in `<topic>` and `<retrieved_context>` tags with explicit system-prompt rules telling Claude to treat them as data, never as instructions
 
@@ -157,12 +157,16 @@ multi-agent-RAG-Debate-Arena/
 ## 💡 Key Engineering Decisions
 
 - **Async-first**: `asyncio.gather()` runs FOR and AGAINST agents concurrently, cutting wait time roughly in half
-- **HTTP/2 for Wikipedia**: Wikimedia blocks HTTP/1.1 from non-browser clients with 403 — `httpx[http2]` solves this
-- **Lazy Pinecone init**: index creation only happens on first debate request, not at server startup — broken Pinecone credentials don't take down the login page
+- **HTTP/2 for Wikipedia**: Wikimedia blocks HTTP/1.1 from non-browser clients with a 403. `httpx[http2]` solves this
+- **Lazy Pinecone init**: index creation only happens on the first debate request, not at server startup. A broken Pinecone connection won't take down the login page
 - **Namespace isolation**: each topic gets its own Pinecone namespace so retrieval for one debate never pollutes another
 
 ---
 
 ## 🔗 Related Projects
 
+<<<<<<< HEAD
 - [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent) - the project that inspired this one: an AI agent that auto-diagnoses pipeline failures and emails engineers a fix
+=======
+- [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent): the project that inspired this one, where an AI agent auto-diagnoses pipeline failures and emails engineers a fix
+>>>>>>> 07f54bc (Remove em dashes from README)
