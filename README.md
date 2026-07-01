@@ -6,9 +6,9 @@
 ![Pinecone](https://img.shields.io/badge/Pinecone-Vector_DB-00C4B4?style=flat)
 ![Voyage AI](https://img.shields.io/badge/Voyage_AI-Embeddings-6366F1?style=flat)
 
-A multi-agent AI system where **three Claude Haiku agents** debate any topic using real Wikipedia knowledge — one argues FOR, one AGAINST, and a third judges the winner. Built on a full RAG (Retrieval-Augmented Generation) pipeline with vector search.
+A multi-agent AI system where **three Claude Haiku agents** debate any topic using real Wikipedia knowledge - one argues FOR, one AGAINST, and a third judges the winner. Built on a full RAG (Retrieval-Augmented Generation) pipeline with vector search.
 
-> 💡 **Inspired by** [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent) — where I first built an AI agent to automate debugging in a data pipeline. This project extends that idea: instead of one agent diagnosing a problem, three agents reason, argue, and evaluate together.
+> 💡 **Inspired by** [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent) - where I first built an AI agent to automate debugging in a data pipeline. This project extends that idea: instead of one agent diagnosing a problem, three agents reason, argue, and evaluate together.
 
 ---
 
@@ -75,7 +75,7 @@ flowchart TD
 | **Agent 2 — AGAINST** | Argues against the topic | Top-5 chunks retrieved from Pinecone via vector similarity |
 | **Agent 3 — Judge** | Scores both arguments, declares a winner | The two generated arguments (no direct RAG retrieval) |
 
-All three are powered by **Claude Haiku** (`claude-haiku-4-5`) and include **prompt injection guardrails** — Wikipedia content and user topics are tagged as untrusted data and can never override agent instructions.
+All three are powered by **Claude Haiku** (`claude-haiku-4-5`) and include **prompt injection guardrails** - Wikipedia content and user topics are tagged as untrusted data and can never override agent instructions.
 
 ---
 
@@ -165,4 +165,4 @@ multi-agent-RAG-Debate-Arena/
 
 ## 🔗 Related Projects
 
-- [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent) — the project that inspired this one: an AI agent that auto-diagnoses pipeline failures and emails engineers a fix
+- [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent) - the project that inspired this one: an AI agent that auto-diagnoses pipeline failures and emails engineers a fix
