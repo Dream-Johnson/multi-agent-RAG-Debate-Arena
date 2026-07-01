@@ -1,6 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "cd backend && pip3 install uv && uv sync"
+buildCommand = "curl -LsSf https://astral.sh/uv/install.sh | sh && cd backend && $HOME/.local/bin/uv sync"
 
 [deploy]
-startCommand = "cd backend && uv run uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"
+startCommand = "cd backend && $HOME/.local/bin/uv run uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"
