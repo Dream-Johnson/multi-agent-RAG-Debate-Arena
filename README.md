@@ -8,6 +8,8 @@
 
 A multi-agent AI system where **three Claude Haiku agents** debate any topic using real Wikipedia knowledge. One argues FOR, one AGAINST, and a third judges the winner. Built on a full RAG (Retrieval-Augmented Generation) pipeline with vector search.
 
+![Debate Arena homepage](screenshots/homepage.png)
+
 > 💡 **Inspired by** [AWS Medallion Pipeline with AI Diagnostic Agent](https://github.com/Dream-Johnson/aws-medallion-pipeline-ai-agent), where I first built an AI agent to automate debugging in a data pipeline. This project extends that idea: instead of one agent diagnosing a problem, three agents reason, argue, and evaluate together.
 
 ---
@@ -40,6 +42,16 @@ A multi-agent AI system where **three Claude Haiku agents** debate any topic usi
 │   ◄── Returns: for_argument, against_argument, verdict          │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 📸 Loading Experience
+
+The UI mirrors the real pipeline stages so the wait feels purposeful:
+
+| Researching Wikipedia | Chunking and Embedding |
+|---|---|
+| ![Loading: Wikipedia](screenshots/loading-wikipedia.png) | ![Loading: Embedding](screenshots/loading-embedding.png) |
 
 ---
 
@@ -76,6 +88,22 @@ flowchart TD
 | **Agent 3 (Judge)** | Scores both arguments and declares a winner | The two generated arguments (no direct RAG retrieval) |
 
 All three are powered by **Claude Haiku** (`claude-haiku-4-5`) and include **prompt injection guardrails**. Wikipedia content and user topics are tagged as untrusted data and can never override agent instructions.
+
+---
+
+## 🗣️ Example Output — "Nuclear Energy"
+
+**FOR argument** (Agent 1):
+
+![FOR argument](screenshots/result-for.png)
+
+**AGAINST argument** (Agent 2):
+
+![AGAINST argument](screenshots/result-against.png)
+
+**Verdict** (Agent 3 — Judge):
+
+![Verdict](screenshots/result-verdict.png)
 
 ---
 
