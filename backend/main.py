@@ -3,6 +3,8 @@ FastAPI application — wires together the password gate, the debate
 orchestrator, and the frontend static files into one running app.
 """
 
+from pathlib import Path
+
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
@@ -47,4 +49,5 @@ async def start_debate(
 # through to here and is served as a static file from frontend/
 # (index.html, style.css, app.js, ...). html=True means a request for "/"
 # serves frontend/index.html automatically.
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
+FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
