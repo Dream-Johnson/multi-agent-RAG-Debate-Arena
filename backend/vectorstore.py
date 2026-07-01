@@ -83,7 +83,7 @@ async def upsert_chunks(topic: str, chunks: list[str], embeddings: list[list[flo
 
     host = _get_index_host()
     async with AsyncIndex(host=host, api_key=settings.pinecone_api_key) as index:
-        await index.upsert(vectors=vectors, namespace=topic)
+        await index.upsert(vectors=vectors, namespace=topic, timeout=60)
 
 
 async def query_chunks(topic: str, query_embedding: list[float], top_k: int = 5) -> list[str]:
