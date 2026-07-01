@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debate Arena — Multi-Agent RAG Debate Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,500&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN: shown until a correct password is supplied. -->
+  <main id="login-screen" class="screen">
+    <form id="login-form" class="login-card" aria-labelledby="login-heading">
+      <h1 id="login-heading">Debate Arena</h1>
+      <p class="subhead">Enter the password to start a debate.</p>
+      <label for="password-input" class="visually-hidden">Password</label>
+      <input
+        type="password"
+        id="password-input"
+        name="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        required
+      />
+      <button type="submit">Enter</button>
+      <p id="login-error" class="error-text" role="alert" aria-live="assertive"></p>
+    </form>
+  </main>
+
+  <!-- MAIN APP SCREEN: hidden until login succeeds. -->
+  <main id="app-screen" class="screen hidden">
+    <header class="app-header">
+      <h1>Debate Arena</h1>
+      <p class="subhead">Two agents argue. One agent judges. You watch.</p>
+    </header>
+
+    <!-- Topic entry form -->
+    <form id="topic-form" class="topic-card">
+      <label for="topic-input" class="visually-hidden">Debate topic</label>
+      <input
+        type="text"
+        id="topic-input"
+        name="topic"
+        placeholder="e.g. should social media be regulated for minors"
+        required
+      />
+      <button type="submit" id="submit-button">Start Debate</button>
+      <p id="topic-error" class="error-text" role="alert" aria-live="assertive"></p>
+    </form>
+
+    <!-- Loading state: staged labels, shown only while a debate is in flight. -->
+    <section id="loading-state" class="loading-card hidden" aria-live="polite">
+      <div class="loading-spinner" aria-hidden="true"></div>
+      <p id="loading-label">Researching the topic on Wikipedia&hellip;</p>
+      <div class="loading-track" aria-hidden="true">
+        <div id="loading-fill" class="loading-fill"></div>
+      </div>
+    </section>
+
+    <!-- Results: populated by app.js once the debate finishes. -->
+    <section id="results" class="results hidden">
+      <h2 id="results-topic"></h2>
+
+      <article class="panel panel-for">
+        <header class="panel-header">FOR</header>
+        <p id="for-argument" class="panel-text"></p>
+      </article>
+
+      <article class="panel panel-against">
+        <header class="panel-header">AGAINST</header>
+        <p id="against-argument" class="panel-text"></p>
+      </article>
+
+      <article class="panel panel-verdict">
+        <header class="panel-header">Verdict</header>
+        <p id="verdict-text" class="panel-text"></p>
+      </article>
+
+      <button type="button" id="new-debate-button">Start a new debate</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

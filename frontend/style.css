@@ -1,0 +1,334 @@
+/* ============================================================
+   DESIGN TOKENS
+   Palette composed from impeccable's seed color: oklch(0.750 0.090 110.0)
+   (yellow-green/olive). Primary (FOR) and accent (AGAINST) are chosen to
+   be distinct in both hue and lightness, deliberately mapped onto the
+   debate's own FOR/AGAINST structure rather than being decorative.
+   ============================================================ */
+:root {
+  /* Architecture: pure white bg + near-black ink (product register,
+     not an "environment" mood, so no tinted surface per design system) */
+  --bg: oklch(1.000 0.000 0);
+  --surface: oklch(0.96 0.012 110);       /* card backgrounds */
+  --ink: oklch(0.18 0.015 110);            /* body text, ~7:1+ vs bg */
+  --muted: oklch(0.50 0.015 110);          /* secondary text, ~4.5:1 vs bg */
+  --border: oklch(0.90 0.012 110);
+
+  /* Brand pair: FOR (lime-green, hue 116, within the seed's ±10° band)
+     vs AGAINST (coral-red, hue 25) — distinct hue AND lightness */
+  --for: oklch(0.66 0.17 116);
+  --for-ink: oklch(0.30 0.10 116);         /* darker tint for text-on-surface use */
+  --against: oklch(0.55 0.19 25);
+  --against-ink: oklch(0.32 0.13 25);
+
+  /* Verdict gets its own identity: gold/amber, between the two hues */
+  --verdict: oklch(0.72 0.14 80);
+  --verdict-ink: oklch(0.34 0.09 80);
+
+  /* Saturated mid-luminance fills (all three above) need white text —
+     see impeccable's text-on-color-fills rule (Helmholtz-Kohlrausch effect) */
+  --on-fill: oklch(1.000 0.000 0);
+
+  --font-display: "Spectral", Georgia, serif;
+  --font-body: "Source Sans 3", -apple-system, sans-serif;
+
+  --radius: 0.5rem;
+  --shadow-card: 0 1px 2px oklch(0.18 0.015 110 / 0.06), 0 4px 16px oklch(0.18 0.015 110 / 0.05);
+
+  /* Without this, browsers don't know the page explicitly supports both
+     schemes and can apply their OWN automatic dark-mode rendering to
+     native form controls (inputs, etc.) on top of our CSS — a separate
+     mechanism from how it renders regular elements like <button>. That
+     mismatch is what caused input text to render invisibly. */
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(0.16 0.012 110);
+    --surface: oklch(0.22 0.015 110);
+    --ink: oklch(0.95 0.008 110);
+    --muted: oklch(0.68 0.015 110);
+    --border: oklch(0.32 0.015 110);
+    --shadow-card: 0 1px 2px oklch(0 0 0 / 0.3), 0 4px 16px oklch(0 0 0 / 0.25);
+  }
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.hidden { display: none !important; }
+
+/* ============================================================
+   SCREENS
+   ============================================================ */
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* No align-items here (default is stretch) — children fill the full
+     width, and each card centers ITSELF with margin-inline: auto below.
+     This is the standard "centered max-width container" pattern, and
+     avoids the align-items/align-self sizing-vs-centering tradeoff that
+     caused the previous two bugs. */
+  padding: 3rem 1.5rem;
+}
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+#login-screen { justify-content: center; }
+
+.login-card {
+  width: 100%;
+  max-width: 22rem;
+  margin-inline: auto; /* centers itself within the full-width .screen */
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.login-card h1 {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+}
+
+.subhead {
+  color: var(--muted);
+  margin: 0 0 0.5rem;
+}
+
+/* ============================================================
+   FORMS (shared between login + topic entry)
+   ============================================================ */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  /* Take full control of rendering away from the browser's native
+     widget styling, so color-scheme above is the only thing deciding
+     how this looks — belt-and-suspenders with the fix above. */
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: 2px solid var(--for);
+  outline-offset: 1px;
+}
+
+button {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.85rem 1.25rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+}
+
+button:hover { opacity: 0.85; }
+button:active { transform: scale(0.98); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.error-text {
+  color: var(--against-ink);
+  font-size: 0.9rem;
+  min-height: 1.2em;
+  margin: 0;
+}
+
+/* ============================================================
+   MAIN APP
+   ============================================================ */
+.app-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.app-header h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+}
+
+.topic-card {
+  width: 100%;
+  max-width: 36rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+#topic-error { width: 100%; }
+
+/* ============================================================
+   LOADING STATE
+   The pipeline (Wikipedia -> chunk -> embed -> store -> 3 Claude calls)
+   takes real time. These stage labels are illustrative, timed to roughly
+   match the real backend order — see app.js. The moment the real
+   response arrives, we jump straight to results regardless of stage.
+   ============================================================ */
+.loading-card {
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid var(--border);
+  border-top-color: var(--for);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#loading-label {
+  font-weight: 600;
+  min-height: 1.4em;
+}
+
+.loading-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.loading-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--for);
+  border-radius: 999px;
+  /* Animate transform, not width — width changes trigger layout reflow
+     on every frame; transform: scaleX() is GPU-composited and doesn't.
+     transform-origin: left makes it grow from the left edge like a
+     normal progress bar. app.js sets --progress (0 to 1) via JS. */
+  transform-origin: left;
+  transform: scaleX(var(--progress, 0));
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); /* ease-out-expo */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner { animation: none; border-top-color: var(--border); }
+  .loading-fill { transition: none; }
+}
+
+/* ============================================================
+   RESULTS
+   ============================================================ */
+.results {
+  width: 100%;
+  max-width: 42rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+#results-topic {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.panel {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.panel:nth-of-type(1) { animation-delay: 0s; }
+.panel:nth-of-type(2) { animation-delay: 0.1s; }
+.panel:nth-of-type(3) { animation-delay: 0.2s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel { animation: none; }
+}
+
+.panel-header {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 0.6rem 1.25rem;
+  color: var(--on-fill);
+}
+
+.panel-for .panel-header { background: var(--for); }
+.panel-against .panel-header { background: var(--against); }
+.panel-verdict .panel-header { background: var(--verdict); }
+
+.panel-text {
+  margin: 0;
+  padding: 1.25rem;
+  max-width: 70ch;
+  white-space: pre-wrap;
+}
+
+#new-debate-button {
+  align-self: center;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  margin-top: 0.5rem;
+}
+
+#new-debate-button:hover { background: var(--surface); opacity: 1; }
