@@ -12,6 +12,11 @@ DESIGN.md
 .env
 **/.env
 
+# Loose images dumped in project root (not the screenshots/ folder)
+/*.png
+/*.jpg
+/*.jpeg
+
 # Python
 __pycache__/
 *.py[oc]
